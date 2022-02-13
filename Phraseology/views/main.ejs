@@ -1,0 +1,496 @@
+<style>
+body {
+	background: gray
+}
+#keyboard {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	position: fixed;
+	bottom: 0;
+	
+}
+
+	#keyboard li {
+		background: #000000;
+		color: #ffffff;
+		float: left;
+		margin: 0 5px 5px 0;
+		width: 40px;
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+		border: 1px solid #f9f9f9;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+	}
+		.firstitem{
+			clear: left;
+		}
+		#keyboard .delete, #keyboard .return {
+			width: 64px;
+		}
+			
+		.lastitem {
+			margin-right: 0;
+		}
+		
+		
+		.on {
+			display: none;
+		}
+		#keyboard li:hover {
+			position: relative;
+			top: 1px;
+			left: 1px;
+			border-color: #e5e5e5;
+			cursor: pointer;
+		}
+		#keyboard .row2:hover {
+			position: relative;
+			top: 1px;
+			left: 20px;
+			border-color: #e5e5e5;
+			cursor: pointer;
+		}
+		.row2 {position: relative; left: 20px}
+
+#mistakes {
+	position: fixed;
+	right: 10;
+	top: 0;
+	font-size: 20px;
+	color: #fb898b;
+}
+#container {
+	display: flex;
+	justify-content: center;
+}
+#grid {
+	margin: auto
+}
+#grid td {
+	background: #000000;
+		color: #ffffff;
+		float: left;
+		margin: 0 5px 5px 0;
+		width: 60px;
+		height: 60px;
+		line-height: 60px;
+		font-size: 35px;
+		text-align: center;
+		border: 1px solid #f9f9f9;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+}
+
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s
+}
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+.popuptext {
+  visibility: hidden;
+  background-color: #555;
+  color: #fff;
+  font-size: 20px;
+  border-radius: 6px;
+  position: fixed;
+  z-index: 1;
+  bottom: 25%;
+  left: 30%;
+  top: 30%;
+  right: 25%;
+}
+
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s
+}
+
+#rules-button {
+	background: #000000;
+	color: #ffffff;
+	font-size: 20px;
+	font-family: serif;
+}
+
+#rules-close {
+	background: #000000;
+	color: #ffffff;
+	position: relative;
+	left: 95%;
+	top: 7.5%;
+}
+#rules-list {
+	list-style: none;
+}
+
+#mistakesBarChart {
+	width:100%;
+	max-width:700px;
+	background:black;
+	position:relative;
+	border-radius: 6px;
+	bottom:10%;
+}
+
+#percent {
+	position: relative;
+	bottom: 40px;
+	left: 20px;
+}
+
+#tweet-container {
+	position: relative;
+	bottom: 85px;
+	left: 87.5%;
+}
+
+#facebook-container {
+	position: relative;
+	bottom: 105px;
+	left: 77.5%;
+	height: 20px;
+	width: 60px;
+	background: white;
+	border-radius: 15px;
+	
+}
+
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=0.75" /> 
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v13.0" nonce="yWxM1u63"></script>
+
+<div id="container">
+	
+	<ul id="keyboard">
+		
+		<li class="letter">Q</li>
+		<li class="letter">W</li>
+		<li class="letter">E</li>
+		<li class="letter">R</li>
+		<li class="letter">T</li>
+		<li class="letter">Y</li>
+		<li class="letter">U</li>
+		<li class="letter">I</li>
+		<li class="letter">O</li>
+		<li class="letter lastitem">P</li>
+		
+		
+		<li class="letter firstitem row2">A</li>
+		<li class="letter row2">S</li>
+		<li class="letter row2">D</li>
+		<li class="letter row2">F</li>
+		<li class="letter row2">G</li>
+		<li class="letter row2">H</li>
+		<li class="letter row2">J</li>
+		<li class="letter row2">K</li>
+		<li class="letter lastitem row2">L</li>
+		
+		
+		<li class="delete firstitem">DELETE</li>
+		<li class="letter">Z</li>
+		<li class="letter">X</li>
+		<li class="letter">C</li>
+		<li class="letter">V</li>
+		<li class="letter">B</li>
+		<li class="letter">N</li>
+		<li class="letter">M</li>
+		<li class="return lastitem">ENTER</li>
+		
+	</ul>
+</div>
+<p id="mistakes"></p>
+<p id="test">Hi</p>
+<div class="popup" onclick="openRules()">
+	<button id="rules-button">Rules</button>
+	<span class="popuptext" id="rulesPopup">
+		<button id="rules-close"><b>X</b></button>
+		<ul id="rules-list">
+		<li>
+			GOAL: connect the top word to the bottom word using two-word combos/phrases.
+		</li>
+		<li>
+		RULES:
+			<ul>
+				<li>
+					 Start your guess below the top word.
+				</li>
+				<li>
+					Each wrong guess generates a hint.
+				</li>
+				<li>
+					5 wrong guesses and it’s GAME OVER
+				</li>
+			</ul>
+		</li>
+		</ul>
+	</span>
+</div>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<div class="popup">
+	<span class="popuptext" id="gameOverPopup" >
+		<canvas id="mistakesBarChart"></canvas>
+		<p id="percent">
+		</p>
+		
+		<div id="tweet-container"></div>
+		<div id="facebook-container"></div>
+		
+	</span>
+</div>
+
+
+<table id="grid">
+	<tr id="row1">
+		
+	</tr>
+	
+	<tr id="row2">
+		
+	</tr>
+	
+	<tr id="row3">
+		
+	</tr>
+	
+	<tr id="row4">
+		
+	</tr>
+	
+	<tr id="row5">
+		
+	</tr>
+	
+	<tr id="row6">
+		
+	</tr>
+	
+	<tr id="row7">
+		
+	</tr>
+</table>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script>
+	var popup = false;
+	var words = JSON.parse('<%- words%>');
+	var mistakes = Number('<%- mistakes%>');
+	var solved = JSON.parse('<%- solved%>');
+	var rowNum = Math.max(1, solved.length + 1);
+	var givenLetter = Number('<%- givenLetter%>');
+	var columnNum = givenLetter;
+	var grid = document.getElementById('grid');
+	document.getElementById('mistakes').innerHTML = "<b>Mistakes: " + mistakes + "</b>";
+	
+	//Makes the table for the Game
+	var makeTable = function() {
+		for (var i = 0; i < words.length; i++) {
+			var word = words[i]
+			var row = grid.rows[i]
+			for (var j = 0; j < word.length; j++) {
+				var cell = row.insertCell(j);
+				if (i == 0 || i == words.length - 1) {
+					cell.innerHTML = word[j];
+				} else if (i <= solved.length || (i == rowNum && j < givenLetter)) {
+					cell.innerHTML = word[j];
+					cell.style.background = 'green'
+				}
+			}
+		}
+	}
+	
+	makeTable();
+	
+	var endGame = function(mistakes, upload) {
+		$.ajax({
+			url: '/game-over',
+			type: 'PUT',
+			data: { upload: upload },
+			success: function(data) {
+				var mistakesMap = data.mistakesMap;
+				var percent = data.percent;
+				openGameOver(mistakesMap, percent);
+			}
+		});
+		
+	}
+	
+	if (mistakes >= 5 || rowNum >= words.length - 1) {
+		
+		endGame(mistakes, false);
+	}
+	
+	//Checks if sword entered is proper
+	var checkWord = function() {
+		var word = "";
+		var actual = words[rowNum]
+		var row = grid.rows[rowNum];
+		for (var i = 0; i < actual.length; i++) {
+			word += row.cells[i].innerHTML;
+		} 
+		return word == actual
+	}
+	
+	//Handles Keyboard Touches character
+	var newCharacter = function(character) {
+		
+		if (popup) {
+			return
+		}
+		var row = grid.rows[rowNum];
+		var cell = row.cells[columnNum]
+		var word = words[rowNum]
+		
+		if (character == "ENTER" || character == "RETURN") {
+			if (columnNum == row.cells.length) {
+				
+				if (checkWord(word)) {
+					var actual = ""
+					for (var i = 0; i < word.length; i++) {
+						var cell = row.cells[i]
+						cell.style.background = 'green'
+					}
+					$.post('/correct', {word: word})
+					rowNum += 1;
+					givenLetter = 0;
+					columnNum = 0;
+					
+					if (rowNum == words.length - 1) {
+						endGame(mistakes, true);
+					}
+				} else {
+					for (var i = givenLetter; i < word.length; i++) {
+						var cell = row.cells[i]
+						cell.innerHTML = ""
+					}
+					
+					var c = row.cells[givenLetter];
+					c.style.background = 'green';
+					c.innerHTML = word[givenLetter]
+					givenLetter += 1;
+					columnNum = givenLetter;
+					mistakes += 1;
+					document.getElementById('mistakes').innerHTML = "<b>Mistakes: " + mistakes + "</b>";
+					$.post('/mistake', {givenLetter: givenLetter});
+					if (mistakes >= 5) {
+						endGame(mistakes, true);
+					}
+				}
+			}
+		} else if (character == "DELETE" || character == "BACKSPACE") {
+			if (columnNum > givenLetter) {
+				row.cells[columnNum - 1].innerHTML = ""
+				columnNum -= 1;
+			}
+		} else {
+			if (columnNum < word.length) {
+				cell.innerHTML = character;
+				columnNum += 1;
+			}
+		}
+	}
+	
+	//Online Keyboard Touches Listener
+	$('#keyboard li').click(function(){
+		var $this = $(this)
+		var character = $this.html();
+		newCharacter(character);
+	});
+	
+	//Keyboard KeyDown Listener
+	document.addEventListener('keydown', function(e) {
+		var character = e.key.toUpperCase()
+		if ((character.search(/[a-zA-Z]/) != -1 && character.length == 1) || character == "DELETE" || character == "BACKSPACE" 
+		  || character == "ENTER" || character == "RETURN") {
+			newCharacter(character);
+		}
+	});
+	
+	//Opens Rules Popup
+	var openRules = function () {
+		var popupEl = document.getElementById("rulesPopup");
+		popupEl.classList.toggle("show");
+		popup = !popup
+	}
+	
+	//Opens GameOverPopup
+	var openGameOver = function(mistakesMap, percent) {
+		var popupEl = document.getElementById("gameOverPopup");
+		popupEl.classList.toggle("show");
+		
+		var xValues = [mistakesMap[0], mistakesMap[1], mistakesMap[2], mistakesMap[3], mistakesMap[4], mistakesMap[5]];
+		var yValues = [0, 1, 2, 3, 4, 5];
+		var barColors = ["green", "green","green","green","green", "green"];
+		
+		var myChart = new Chart("mistakesBarChart", {
+			type: "horizontalBar",
+			data: {
+				labels: yValues,
+				datasets: [{
+					barPercentage: 0.5,
+					barThickness: 15,
+					minBarLength: 0,
+					backgroundColor: barColors,
+					data: xValues,
+					label: "Games"
+				}]
+			}
+		});
+		
+		twttr.widgets.createShareButton(
+			"https:\/\/phraseology.com",
+			document.getElementById("tweet-container"),
+			{
+				size: "small",
+				text: "I beat today's Phraseology with only " + mistakes + " mistakes. Can you do better? Play now at " ,
+				hashtags: "phraseology,phrasegame,wordgame"
+			}
+		);
+		
+		var facebook = document.getElementById("facebook-container");
+		var b = document.createElement("div")
+		b.className = "fb-share-button";
+		
+		b.layout = "button"
+		b.size = "small"
+		var a = document.createElement("a");
+		a.target = "_blank"
+		a.href = "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2Fshare-button&amp;src=sdkpreparse"
+		a.className = "fb-xfbml-parse-ignore"
+		a.text = "Share"
+		a.style.fontsize
+		
+		b.appendChild(a);
+		b.style.background = "white"
+		b.style.position = "relative"
+		b.style.top = "4px"
+		b.style.left = "4px"
+		facebook.appendChild(b);
+		
+		document.getElementById("percent").innerHTML = "Games Won: " + Math.round(percent * 100) + "%";
+		popup = !popup
+	}
+
+</script>
