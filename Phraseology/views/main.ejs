@@ -16,19 +16,21 @@ body {
 		color: #ffffff;
 		float: left;
 		margin: 0 5px 5px 0;
-		width: 40px;
-		height: 40px;
+		width: 45px;
+		height: 45px;
 		line-height: 40px;
 		text-align: center;
 		border: 1px solid #f9f9f9;
 		-moz-border-radius: 5px;
 		-webkit-border-radius: 5px;
+		font-size: 30px
 	}
 		.firstitem{
 			clear: left;
 		}
 		#keyboard .delete, #keyboard .return {
-			width: 64px;
+			width: 80px;
+			font-size: 20px;
 		}
 			
 		.lastitem {
@@ -119,13 +121,6 @@ body {
   border-color: #555 transparent transparent transparent;
 }
 
-/* Toggle this class when clicking on the popup container (hide and show the popup) */
-.popup .show {
-  visibility: visible;
-  -webkit-animation: fadeIn 1s;
-  animation: fadeIn 1s
-}
-
 #rules-button {
 	background: #000000;
 	color: #ffffff;
@@ -165,21 +160,36 @@ body {
 	left: 87.5%;
 }
 
-#facebook-container {
-	position: relative;
-	bottom: 105px;
-	left: 77.5%;
-	height: 20px;
-	width: 60px;
-	background: white;
-	border-radius: 15px;
+@media screen and (max-width: 600px) {
+	.popuptext{
+		left: 10%;
+		right:10%;
+		height: 25%
+	}
+	#tweet-container {
+		position: relative;
+		bottom: 35%;
+		left: 80%;
+	}
+	#rules-close {
+		left: 90%;
+	}
+	#keyboard li {
+		width: 40px;
+		height: 55px;
+		font-size: 30px
+	}
 	
+	#keyboard .delete, #keyboard .return {
+		width: 60px;
+		font-size: 15px;
+	}
 }
+
 
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=0.75" /> 
 <div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v13.0" nonce="yWxM1u63"></script>
 
 <div id="container">
 	
@@ -221,7 +231,6 @@ body {
 	</ul>
 </div>
 <p id="mistakes"></p>
-<p id="test">Hi</p>
 <div class="popup" onclick="openRules()">
 	<button id="rules-button">Rules</button>
 	<span class="popuptext" id="rulesPopup">
@@ -255,7 +264,6 @@ body {
 		</p>
 		
 		<div id="tweet-container"></div>
-		<div id="facebook-container"></div>
 		
 	</span>
 </div>
@@ -468,26 +476,6 @@ body {
 				hashtags: "phraseology,phrasegame,wordgame"
 			}
 		);
-		
-		var facebook = document.getElementById("facebook-container");
-		var b = document.createElement("div")
-		b.className = "fb-share-button";
-		
-		b.layout = "button"
-		b.size = "small"
-		var a = document.createElement("a");
-		a.target = "_blank"
-		a.href = "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2Fshare-button&amp;src=sdkpreparse"
-		a.className = "fb-xfbml-parse-ignore"
-		a.text = "Share"
-		a.style.fontsize
-		
-		b.appendChild(a);
-		b.style.background = "white"
-		b.style.position = "relative"
-		b.style.top = "4px"
-		b.style.left = "4px"
-		facebook.appendChild(b);
 		
 		document.getElementById("percent").innerHTML = "Games Won: " + Math.round(percent * 100) + "%";
 		popup = !popup
