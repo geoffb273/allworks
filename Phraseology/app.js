@@ -7,8 +7,10 @@ var cookieParser = require('cookie-parser');
 var MemoryStore = require('memorystore')(session);
 var PORT = process.env.PORT || 8000
 const cron = require('node-cron');
+var cors = require('cors');
 
 app.use(express.urlencoded());
+app.use(cors())
 app.use(session({
 	resave: false,
 	cookie: {
