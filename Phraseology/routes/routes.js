@@ -1,12 +1,13 @@
 var db = require('../models/database.js');
 var crypto = require('crypto');
 var { v4: uuidv4 } = require('uuid');
+var requestIp = require('request-ip');
 
 var getHome = function(req, res) {
 	
 	
 	if (req.session.user == undefined) {
-		req.session.user = uuidv4();
+		req.session.user = requestIp.getClientIp(req);
 		var midnightEST = new Date();
 		midnightEST.setUTCHours(28, 59, 59, 1000);
 		req.session.expires = midnightEST;

@@ -2,6 +2,26 @@
 body {
 	background: gray
 }
+#title {
+	margin: auto
+	
+}
+
+	#title td {
+		background: #000000;
+		color: #ffffff;
+		float: left;
+		margin: 0 5px 5px 0;
+		width: 60px;
+		height: 60px;
+		line-height: 60px;
+		font-size: 60px;
+		text-align: center;
+		border: 1px solid #f9f9f9;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+	}
+
 #keyboard {
 	margin: 0;
 	padding: 0;
@@ -123,6 +143,8 @@ body {
 
 #rules-button {
 	background: #000000;
+	position: fixed;
+	top: 10;
 	color: #ffffff;
 	font-size: 20px;
 	font-family: serif;
@@ -184,10 +206,33 @@ body {
 		width: 60px;
 		font-size: 15px;
 	}
+	
+	#title td {
+		font-size: 40px;
+		width: 50px;
+		height: 50px;
+	}
 }
 
 
 </style>
+<header>
+<table id="title">
+	<tr>
+		<td><b>P</b></td>
+		<td><b>H</b></td>
+		<td><b>R</b></td>
+		<td><b>A</b></td>
+		<td><b>S</b></td>
+		<td><b>E</b></td>
+		<td><b>C</b></td>
+		<td><b>H</b></td>
+		<td><b>A</b></td>
+		<td><b>I</b></td>
+		<td><b>N</b></td>
+	</tr>
+</table>
+</header>
 <meta name="viewport" content="width=device-width, initial-scale=0.75" /> 
 <div id="fb-root"></div>
 
@@ -468,7 +513,7 @@ body {
 		});
 		
 		twttr.widgets.createShareButton(
-			"https:\/\/phrasechain.com",
+			"https:\/\/www.phrasechain.com",
 			document.getElementById("tweet-container"),
 			{
 				size: "small",
