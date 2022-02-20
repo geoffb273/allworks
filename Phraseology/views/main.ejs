@@ -379,9 +379,12 @@ body {
 				var cell = row.insertCell(j);
 				if (i == 0 || i == words.length - 1) {
 					cell.innerHTML = word[j];
-				} else if (i <= solved.length || (i == rowNum && j < givenLetter)) {
+				} else if (i <= solved.length) {
 					cell.innerHTML = word[j];
 					cell.style.background = 'green'
+				} else if (i == rowNum && j < givenLetter) {
+					cell.innerHTML = word[j];
+					cell.style.background = 'red'
 				}
 			}
 		}
