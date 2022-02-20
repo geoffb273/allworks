@@ -114,12 +114,40 @@ var update = function(req, res) {
 	res.send("Done")
 }
 
+var add = function(req, res) {
+	res.render('admin.ejs')
+}
+
+var newWords = function(req, res) {
+	var username = req.body.username 
+	var words = {
+		1: req.body.word1,
+		2: req.body.word2,
+		3: req.body.word3,
+		4: req.body.word4,
+		5: req.body.word5,
+		6: req.body.word6,
+		7: req.body.word7
+	}
+	if (username == "geoffb273@190054") {
+		db.newWords(words);
+		res.send("Done")
+	}	else {
+		res.redirect("/")
+	}
+	
+}
+
+
+
 var routes = {
 	home: getHome,
 	mistake: addMistake,
 	correct: addLevel,
 	game_over: endGame,
-	update: update
+	update: update,
+	add: add,
+	send: newWords
 };
 
 module.exports = routes;
