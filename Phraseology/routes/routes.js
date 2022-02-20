@@ -1,32 +1,34 @@
 var db = require('../models/database.js');
 var crypto = require('crypto');
+var {v4: uuidv4} = require('uuid')
 var requestIp = require('request-ip');
 
 var getHome = function(req, res) {
-	
-	if (req.session.user == undefined) {
-		var ip = requestIp.getClientIp(req);
-		req.session.user = ip;
-		
-		var midnightEST = new Date();
-		midnightEST.setUTCHours(28, 59, 59, 1000);
-		req.session.expires = midnightEST;
+	var midnightEST = new Date();
+	midnightEST.setUTCHours(28, 59, 59, 1000);
+	if (req.cookies['user'] == undefined) {
+		res.cookie('user', uuidv4());
+	}
+	var mistakes = 0;
+	if (req.cookies['mistakes'] == undefined) {
+		res.cookie('mistakes', 0, {expires: midnightEST})
+	} else {
+		mistakes = req.cookies['mistakes']
 	}
 	
+	var solved = []
 	
-	if (req.session.mistakes == undefined) {
-		req.session.mistakes = 0;
+	if (req.cookies['solved'] == undefined) {
+		res.cookie('solved', JSON.stringify([]), {expires: midnightEST})
+	} else {
+		solved = JSON.parse(req.cookies['solved']);
 	}
-	if (req.session.solved == undefined) {
-		req.session.solved = []
-	}
-	if (req.session.givenLetter == undefined) {
-		req.session.givenLetter = 0;
-	}
-	if (req.session.expires != undefined && req.session.expires > new Date()) {
-		req.session.mistakes = 0;
-		req.session.solved = []
-		req.session.givenLetter = 0;
+	
+	var givenLetter = 0;
+	if (req.cookies['givenLetter'] == undefined) {
+		res.cookie('givenLetter', 0, {expires: midnightEST})
+	} else {
+		givenLetter = req.cookies['givenLetter']
 	}
 	
 	db.getWords().then(snapshot => {
@@ -39,9 +41,9 @@ var getHome = function(req, res) {
 		}
 		res.render('main.ejs', {
 			words: JSON.stringify(words), 
-			mistakes: req.session.mistakes, 
-			solved: JSON.stringify(req.session.solved),
-			givenLetter: req.session.givenLetter
+			mistakes: mistakes, 
+			solved: JSON.stringify(solved),
+			givenLetter: givenLetter
 		});
 	}).catch(err => {
 		console.log(err);
@@ -51,34 +53,41 @@ var getHome = function(req, res) {
 }
 
 var addMistake = function(req, res) {
-	if (req.session.mistakes != undefined) {
-		req.session.mistakes += 1;
+	console.log(req.cookies['user'])
+	var midnightEST = new Date();
+	midnightEST.setUTCHours(28, 59, 59, 1000);
+	if (req.cookies['mistakes'] != undefined) {
+		res.cookie('mistakes', Number(req.cookies['mistakes']) + 1, {expires: midnightEST});
 	} else {
-		req.session.mistakes = 0;
+		res.cookie('mistakes', 0, {expires: midnightEST});
 	}
-	if (req.session.givenLetter != undefined) {
-		req.session.givenLetter = req.body.givenLetter;
+	if (req.cookies['givenLetter'] != undefined) {
+		res.cookie('givenLetter', req.body.givenLetter, {expires: midnightEST});
 	} else {
-		req.session.givenLetter = req.body.givenLetter;
+		res.cookie('givenLetter', req.body.givenLetter, {expires: midnightEST});
 	}
 	res.send("Done");
 }
 
 var addLevel = function(req, res) {
 	var word = req.body.word;
-	if (req.session.solved != undefined) {
-		req.session.solved.push(word);
+	var midnightEST = new Date();
+	midnightEST.setUTCHours(28, 59, 59, 1000);
+	if (req.cookies['solved'] != undefined) {
+		var solved = JSON.parse(req.cookies['solved']);
+		solved.push(word)
+		res.cookie('solved', JSON.stringify(solved), {expires: midnightEST});
 	} else {
-		req.session.solved = [word];
+		res.cookie('solved', JSON.stringify([word]), {expires: midnightEST});
 	}
-	req.session.givenLetter = 0;
+	res.cookie('givenLetter', 0, {expires: midnightEST})
 	res.send("Done");
 }
 
 var endGame = function(req, res) {
-	var mistakes = (req.session.mistakes != undefined) ? req.session.mistakes : 0;
+	var mistakes = (req.cookies['mistakes'] != undefined) ? req.cookies['mistakes'] : 0;
 	var upload = (req.body.upload != undefined) ? req.body.upload : false;
-	var id = req.session.user;
+	var id = req.cookies['user'];
 	var encrypted = crypto.createHash('sha256').update(String(id)).digest('hex');
 	db.getRecord(encrypted).then(snapshot => {
 		var mistakesMap = { 

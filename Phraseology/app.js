@@ -12,10 +12,11 @@ var cors = require('cors');
 
 app.use(express.urlencoded());
 app.use(cors())
+app.use(cookieParser())
 app.use(session({
 	resave: true,
 	cookie: {
-		maxAge: 86400000
+		
 	},
 	
     secret: 'GRBRANDT'
