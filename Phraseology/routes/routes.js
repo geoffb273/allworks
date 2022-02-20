@@ -5,9 +5,10 @@ var requestIp = require('request-ip');
 
 var getHome = function(req, res) {
 	
-	
 	if (req.session.user == undefined) {
-		req.session.user = requestIp.getClientIp(req);
+		var ip = requestIp.getClientIp(req);
+		req.session.user = ip;
+		
 		var midnightEST = new Date();
 		midnightEST.setUTCHours(28, 59, 59, 1000);
 		req.session.expires = midnightEST;
