@@ -1,13 +1,18 @@
 var db = require('../models/database.js');
 var crypto = require('crypto');
+var { v4: uuidv4 } = require('uuid');
 
 var getHome = function(req, res) {
-	var midnightEST = new Date();
-	midnightEST.setUTCHours(28, 59, 59, 1000);
 	
-	req.session.cookie.expire = midnightEST
 	
-	req.session.user = req.ip;
+	if (req.session.user == undefined) {
+		req.session.user = uuidv4();
+		var midnightEST = new Date();
+		midnightEST.setUTCHours(28, 59, 59, 1000);
+		req.session.expires = midnightEST;
+	}
+	
+	
 	if (req.session.mistakes == undefined) {
 		req.session.mistakes = 0;
 	}
@@ -15,6 +20,11 @@ var getHome = function(req, res) {
 		req.session.solved = []
 	}
 	if (req.session.givenLetter == undefined) {
+		req.session.givenLetter = 0;
+	}
+	if (req.session.expires != undefined && req.session.expires > new Date()) {
+		req.session.mistakes = 0;
+		req.session.solved = []
 		req.session.givenLetter = 0;
 	}
 	

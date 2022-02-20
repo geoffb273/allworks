@@ -12,11 +12,10 @@ var cors = require('cors');
 app.use(express.urlencoded());
 app.use(cors())
 app.use(session({
-	resave: false,
+	resave: true,
 	cookie: {
 		
 	},
-    resave: false,
     secret: 'GRBRANDT'
 }))
 
