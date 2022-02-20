@@ -119,19 +119,20 @@ var add = function(req, res) {
 }
 
 var newWords = function(req, res) {
-	var username = req.body.username 
+	var username = req.body.username
 	var words = {
-		1: req.body.word1,
-		2: req.body.word2,
-		3: req.body.word3,
-		4: req.body.word4,
-		5: req.body.word5,
-		6: req.body.word6,
-		7: req.body.word7
+		1: req.body.word1.toUpperCase(),
+		2: req.body.word2.toUpperCase(),
+		3: req.body.word3.toUpperCase(),
+		4: req.body.word4.toUpperCase(),
+		5: req.body.word5.toUpperCase(),
+		6: req.body.word6.toUpperCase(),
+		7: req.body.word7.toUpperCase()
 	}
+	
 	if (username == "geoffb273@190054") {
 		db.newWords(words);
-		res.send("Done")
+		res.redirect("/add")
 	}	else {
 		res.redirect("/")
 	}
