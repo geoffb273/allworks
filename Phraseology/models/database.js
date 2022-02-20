@@ -12,13 +12,27 @@ var getWords = function() {
 	return utils.getItem("words", 0);
 }
 
+var newWords = function(words) {
+	utils.getItem("words", "").then(snap => {
+		if (snap.exists()) {
+			var phrases = snap.val();
+			var num = phrases.length;
+			utils.putItem("words", num, words);
+		}
+	});
+	
+}
+
 var updateWords = function() {
 	utils.getItem("words", "").then(snap => {
 		if (snap.exists()) {
 			var phrases = snap.val();
 			var updated = {}
-			for (var i = 0; i < phrases.length; i++) {
-				updated[i - 1] = phrases[i]
+			for (var key in phrases) {
+				if (key > 0) {
+					updated[key - 1] = phrases[key]
+					last = key;
+				}
 			}
 			utils.putItem("words", "", updated);
 		}
@@ -30,5 +44,6 @@ module.exports = {
 	getRecord: getRecord,
 	setRecord: setRecord,
 	getWords: getWords,
-	updateWords: updateWords
+	updateWords: updateWords,
+	newWords: newWords
 };

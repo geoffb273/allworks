@@ -30,6 +30,9 @@ app.post("/mistake", routes.mistake);
 app.post("/correct", routes.correct);
 app.put("/game-over", routes.game_over);
 
+app.get("/add", routes.add);
+app.post("/send", routes.send)
+
 cron.schedule("0 5 * * *", routes.update);
 
 
