@@ -1,6 +1,5 @@
 var db = require('../models/database.js');
 var crypto = require('crypto');
-var { v4: uuidv4 } = require('uuid');
 var requestIp = require('request-ip');
 
 var getHome = function(req, res) {
