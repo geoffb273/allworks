@@ -381,7 +381,7 @@ body {
 					cell.innerHTML = word[j];
 				} else if (i <= solved.length) {
 					cell.innerHTML = word[j];
-					cell.style.background = 'red'
+					cell.style.background = 'green'
 				} else if (i == rowNum && j < givenLetter) {
 					cell.innerHTML = word[j];
 					cell.style.background = 'red'
@@ -456,7 +456,7 @@ body {
 					}
 					
 					var c = row.cells[givenLetter];
-					c.style.background = 'green';
+					c.style.background = 'red';
 					c.innerHTML = word[givenLetter]
 					givenLetter += 1;
 					columnNum = givenLetter;
