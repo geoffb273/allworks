@@ -18,6 +18,12 @@ app.use(session({
     secret: 'GRBRANDT'
 }))
 
+ app.all('/', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next()
+  });
+
 app.get("/", routes.home);
 app.post("/mistake", routes.mistake);
 app.post("/correct", routes.correct);
