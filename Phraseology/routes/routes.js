@@ -6,14 +6,19 @@ var requestIp = require('request-ip');
 var getHome = function(req, res) {
 	var midnightEST = new Date();
 	midnightEST.setUTCHours(28, 59, 59, 1000);
+	var infinite = new Date();
+	infinite.setFullYear(3000)
+	
 	if (req.cookies['user'] == undefined) {
-		res.cookie('user', uuidv4());
+		res.cookie('user', uuidv4(), {expires: infinite});
 	}
+	
 	var mistakes = 0;
 	if (req.cookies['mistakes'] == undefined) {
 		res.cookie('mistakes', 0, {expires: midnightEST})
 	} else {
 		mistakes = req.cookies['mistakes']
+		//res.cookie('mistakes', 0, {expires: midnightEST})
 	}
 	
 	var solved = []
@@ -21,6 +26,7 @@ var getHome = function(req, res) {
 	if (req.cookies['solved'] == undefined) {
 		res.cookie('solved', JSON.stringify([]), {expires: midnightEST})
 	} else {
+		//res.cookie('solved', JSON.stringify([]), {expires: midnightEST})
 		solved = JSON.parse(req.cookies['solved']);
 	}
 	
@@ -28,6 +34,7 @@ var getHome = function(req, res) {
 	if (req.cookies['givenLetter'] == undefined) {
 		res.cookie('givenLetter', 0, {expires: midnightEST})
 	} else {
+		//res.cookie('givenLetter', 0, {expires: midnightEST})
 		givenLetter = req.cookies['givenLetter']
 	}
 	
@@ -88,8 +95,8 @@ var endGame = function(req, res) {
 	var mistakes = (req.cookies['mistakes'] != undefined) ? req.cookies['mistakes'] : 0;
 	var upload = (req.body.upload != undefined) ? req.body.upload : false;
 	var id = req.cookies['user'];
-	var encrypted = crypto.createHash('sha256').update(String(id)).digest('hex');
-	db.getRecord(encrypted).then(snapshot => {
+	console.log(id)
+	db.getRecord(id).then(snapshot => {
 		var mistakesMap = { 
 			0: 0,
 			1: 0,
@@ -111,7 +118,7 @@ var endGame = function(req, res) {
 		if (upload == "true") {
 			mistakesMap[mistakes] += 1
 			games += 1
-			db.setRecord(encrypted, mistakesMap);
+			db.setRecord(id, mistakesMap);
 		}
 		
 		var winningPercentage = (games - mistakesMap[5]) / games;
