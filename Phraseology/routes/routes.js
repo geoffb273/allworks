@@ -130,7 +130,7 @@ var newWords = function(req, res) {
 		7: req.body.word7.toUpperCase()
 	}
 	
-	if (username == "geoffb273@190054") {
+	if (username == "geoffb273@190054" || username == "EHSVikings12!") {
 		db.newWords(words);
 		res.redirect("/add")
 	}	else {
