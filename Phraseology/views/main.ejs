@@ -97,9 +97,9 @@ body {
 		float: left;
 		margin: 0 5px 0px 0;
 		width: 60px;
-		height: 55px;
-		line-height: 60px;
-		font-size: 45px;
+		height: 60px;
+		line-height: 55px;
+		font-size: 40px;
 		text-align: center;
 		border: 1px solid #f9f9f9;
 		-moz-border-radius: 5px;
@@ -124,10 +124,12 @@ body {
   border-radius: 6px;
   position: fixed;
   z-index: 1;
-  height: 350px;
-  left: 30%;
+  left: 20%;
+		right:20%;
+		height: 25%
   top: 30%;
-  right: 25%;
+  max-width: 700px;
+  
 }
 
 .popup .popuptext::after {
@@ -167,7 +169,7 @@ body {
 	background:black;
 	position:relative;
 	border-radius: 6px;
-	bottom:10%;
+	bottom: 50px;
 }
 
 #percent {
@@ -200,9 +202,10 @@ body {
 		left: 90%;
 	}
 	#keyboard li {
+		margin: 0 5px 10px 0;
 		width: 40px;
-		height: 55px;
-		font-size: 30px
+		height: 40px;
+		font-size: 35px
 	}
 	
 	#keyboard .delete, #keyboard .return {
@@ -211,10 +214,12 @@ body {
 	}
 	
 	#title td {
-		font-size: 40px;
+		font-size: 45px;
 		width: 50px;
-		height: 50px;
+		height: 45px;
+		line-height: 45px;
 	}
+	
 	
 	#rule-button {
 		position: relative;
@@ -227,27 +232,59 @@ body {
 		top: 75px;
 		left: 75%;
 	}
+	
+	#grid td {
+		margin: 0 1px 0px 0;
+		width: 50px;
+		line-height: 45px;
+		font-size: 25px;
+	}
 }
 
-@media screen and (max-height: 690px) and (min-width: 600px) {
+@media screen and (max-height: 710px) and (min-width: 600px) {
 	#keyboard li {
 		width: 35px;
-		height: 30px;
+		height: 35px;
 		font-size: 20px;
-		margin: 0 2px 1px 0;
+		margin: 0 3px 2px 0;
 	}
 	#keyboard .delete, #keyboard .return {
 		width: 60px;
 		font-size: 15px;
 	}
 	#grid td {
-		
-		
-		margin: 0 5px 0px 0;
-		width: 55px;
-		height: 50px;
-		font-size: 45px;
+		margin: 0 1px 0px 0;
+		width: 50px;
+		line-height: 45px;
 	}
+	
+	#title td {
+		font-size: 45px;
+		width: 50px;
+		height: 50px;
+		line-height: 50px;
+	}
+}
+
+@media screen and (max-height: 710px) and (max-width: 600px) {
+	#keyboard li {
+		width: 35px;
+		height: 35px;
+		font-size: 25px;
+		margin: 0 2px 0px 0;
+	}
+	#keyboard .delete, #keyboard .return {
+		width: 60px;
+		font-size: 15px;
+	}
+	
+	#title td {
+		font-size: 45px;
+		width: 50px;
+		height: 45px;
+		line-height: 45px;
+	}
+	
 }
 
 
@@ -272,7 +309,6 @@ body {
 </header>
 <meta name="viewport" content="width=device-width, initial-scale=0.75" /> 
 <div id="fb-root"></div>
-
 <div id="container">
 	
 	<ul id="keyboard">
@@ -339,7 +375,7 @@ body {
 	</span>
 </div>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-<div class="popup">
+<div class="popup" onclick="closeGameOver()">
 	<span class="popuptext" id="gameOverPopup" >
 		<canvas id="mistakesBarChart"></canvas>
 		<p id="percent">
@@ -380,7 +416,6 @@ body {
 		
 	</tr>
 </table>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script>
@@ -390,12 +425,14 @@ body {
 	var solved = JSON.parse('<%- solved%>');
 	var rowNum = Math.max(1, solved.length + 1);
 	var givenLetter = Number('<%- givenLetter%>');
+	
 	var columnNum = givenLetter;
 	var grid = document.getElementById('grid');
 	document.getElementById('mistakes').innerHTML = "<b>Mistakes: " + mistakes + "</b>";
 	
 	//Makes the table for the Game
 	var makeTable = function() {
+		
 		for (var i = 0; i < words.length; i++) {
 			var word = words[i]
 			var row = grid.rows[i]
@@ -409,6 +446,9 @@ body {
 				} else if (i == rowNum && j < givenLetter) {
 					cell.innerHTML = word[j];
 					cell.style.background = 'red'
+				} else if (i > solved.length && i < words.length && mistakes >= 5) {
+					cell.innerHTML = word[j];
+					cell.style.background = 'red'
 				}
 			}
 		}
@@ -420,9 +460,11 @@ body {
 		$.ajax({
 			url: '/game-over',
 			type: 'PUT',
-			data: { upload: upload },
+			data: { upload: upload},
 			success: function(data) {
+				
 				var mistakesMap = data.mistakesMap;
+				
 				var percent = data.percent;
 				openGameOver(mistakesMap, percent);
 			}
@@ -449,7 +491,7 @@ body {
 	//Handles Keyboard Touches character
 	var newCharacter = function(character) {
 		
-		if (popup) {
+		if (popup || rowNum > words.length - 1) {
 			return
 		}
 		var row = grid.rows[rowNum];
@@ -486,10 +528,22 @@ body {
 					columnNum = givenLetter;
 					mistakes += 1;
 					document.getElementById('mistakes').innerHTML = "<b>Mistakes: " + mistakes + "</b>";
-					$.post('/mistake', {givenLetter: givenLetter});
-					if (mistakes >= 5) {
-						endGame(mistakes, true);
-					}
+					$.post('/mistake', {givenLetter: givenLetter}, function(res) {
+						if (mistakes >= 5) {
+							for (var i = rowNum; i < words.length; i++) {
+								var r = grid.rows[i]
+								for (var j = 0; j < words[i].length; j++) {
+									var cell = r.cells[j]
+									cell.style.background = 'red'
+									cell.innerHTML = words[i][j];
+								}
+							}
+							//document.getElementById('test').innerHTML = solved.length;
+							rowNum  = words.length;
+							columnNum = 0;
+							endGame(5, true);
+						}
+					});
 				}
 			}
 		} else if (character == "DELETE" || character == "BACKSPACE") {
@@ -564,6 +618,12 @@ body {
 		
 		document.getElementById("percent").innerHTML = "Games Won: " + Math.round(percent * 100) + "%";
 		popup = !popup
+	}
+	
+	var closeGameOver = function() {
+		var popupEl = document.getElementById("gameOverPopup");
+		popupEl.classList.toggle("show");
+		popup = !popup;
 	}
 
 </script>
