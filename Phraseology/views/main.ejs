@@ -446,7 +446,7 @@ body {
 					cell.style.background = 'green'
 				} else if (i == rowNum && j < givenLetter) {
 					cell.innerHTML = word[j];
-					cell.style.background = 'red'
+					cell.style.background = '#BDB76B'
 				} else if (i > solved.length && i < words.length && mistakes >= 5) {
 					cell.innerHTML = word[j];
 					cell.style.background = 'red'
@@ -465,7 +465,6 @@ body {
 			success: function(data) {
 				
 				var mistakesMap = data.mistakesMap;
-				
 				var percent = data.percent;
 				openGameOver(mistakesMap, percent);
 			}

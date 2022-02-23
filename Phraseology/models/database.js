@@ -8,8 +8,12 @@ var setRecord = function(id, record) {
 	return utils.putItem("records", id, record);
 }
 
-var getWords = function() {
-	return utils.getItem("words", 0);
+var getPointer = function() {
+	return utils.getItem("pointer", "");
+}
+
+var getWords = function(pointer) {
+	return utils.getItem("words", pointer);
 }
 
 var newWords = function(words) {
@@ -24,17 +28,10 @@ var newWords = function(words) {
 }
 
 var updateWords = function() {
-	utils.getItem("words", "").then(snap => {
+	utils.getItem("pointer", "").then(snap => {
 		if (snap.exists()) {
-			var phrases = snap.val();
-			var updated = {}
-			for (var key in phrases) {
-				if (key > 0) {
-					updated[key - 1] = phrases[key]
-					last = key;
-				}
-			}
-			utils.putItem("words", "", updated);
+			var pointer = snap.val() + 1;
+			utils.putItem("pointer", "", pointer);
 		}
 	});
 }
@@ -45,5 +42,6 @@ module.exports = {
 	setRecord: setRecord,
 	getWords: getWords,
 	updateWords: updateWords,
+	getPointer: getPointer,
 	newWords: newWords
 };

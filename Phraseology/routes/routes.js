@@ -37,25 +37,32 @@ var getHome = function(req, res) {
 		//res.cookie('givenLetter', 0, {expires: midnightEST})
 		givenLetter = req.cookies['givenLetter']
 	}
-	
-	db.getWords().then(snapshot => {
-		var words = []
+	db.getPointer().then(snapshot => {
+		var pointer = 0
 		if (snapshot.exists()) {
-			var unclean = snapshot.val()
-			for(var i in unclean) {
-				words.push(unclean[i]);
-			}
+			pointer = snapshot.val();
 		}
-		res.render('main.ejs', {
-			words: JSON.stringify(words), 
-			mistakes: mistakes, 
-			solved: JSON.stringify(solved),
-			givenLetter: givenLetter
+		db.getWords(pointer).then(snapshot => {
+			var words = []
+			if (snapshot.exists()) {
+				var unclean = snapshot.val()
+				for(var i in unclean) {
+					words.push(unclean[i]);
+				}
+			}
+			res.render('main.ejs', {
+				words: JSON.stringify(words), 
+				mistakes: mistakes, 
+				solved: JSON.stringify(solved),
+				givenLetter: givenLetter
+			});
+		}).catch(err => {
+			console.log(err);
+			res.send(err)
 		});
-	}).catch(err => {
-		console.log(err);
-		res.send(err)
-	});
+	})
+	
+	
 	
 }
 
