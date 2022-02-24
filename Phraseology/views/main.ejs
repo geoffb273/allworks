@@ -349,6 +349,7 @@ body {
 		
 	</ul>
 </div>
+
 <p id="mistakes"></p>
 <div class="popup" onclick="openRules()">
 	<button id="rules-button">Rules</button>
@@ -417,6 +418,7 @@ body {
 		
 	</tr>
 </table>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script>
@@ -477,7 +479,31 @@ body {
 		endGame(mistakes, false);
 	}
 	
-	//Checks if sword entered is proper
+	//Checks if entered word is a real word 
+	var isReal = function() {
+		
+		var word = "";
+		var row = grid.rows[rowNum];
+		var actual = words[rowNum]
+		for (var i = 0; i < actual.length; i++) {
+			word += row.cells[i].innerHTML;
+		} 
+		var lowercase = word.toLowerCase()
+		var url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + lowercase;
+		
+		var ran = false;
+		$.ajax({
+			type: "GET",
+			url: url,
+			async: false,
+			success: function(data) {
+				ran = true
+			}
+		})
+		return ran;
+	}
+	
+	//Checks if word entered is proper
 	var checkWord = function() {
 		var word = "";
 		var actual = words[rowNum]
@@ -500,8 +526,14 @@ body {
 		
 		if (character == "ENTER" || character == "RETURN") {
 			if (columnNum == row.cells.length) {
-				
-				if (checkWord(word)) {
+				var real = isReal();
+				if (!real) {
+					for (var i = givenLetter; i < word.length; i++) {
+						var cell = row.cells[i]
+						cell.innerHTML = ""
+						columnNum = 0;
+					}
+				} else if (checkWord()) {
 					var actual = ""
 					for (var i = 0; i < word.length; i++) {
 						var cell = row.cells[i]
@@ -538,7 +570,7 @@ body {
 									cell.innerHTML = words[i][j];
 								}
 							}
-							//document.getElementById('test').innerHTML = solved.length;
+							
 							rowNum  = words.length;
 							columnNum = 0;
 							endGame(5, true);
