@@ -426,7 +426,7 @@ body {
 	var words = JSON.parse('<%- words%>');
 	var mistakes = Number('<%- mistakes%>');
 	var solved = JSON.parse('<%- solved%>');
-	var rowNum = Math.max(1, solved.length + 1);
+	var rowNum = (mistakes < 5) ? Math.max(1, solved.length + 1): words.length;
 	var givenLetter = Number('<%- givenLetter%>');
 	
 	var columnNum = givenLetter;
