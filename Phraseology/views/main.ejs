@@ -418,7 +418,7 @@ body {
 		
 	</tr>
 </table>
-
+<p id= "test">Hi</p>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script>
@@ -426,7 +426,7 @@ body {
 	var words = JSON.parse('<%- words%>');
 	var mistakes = Number('<%- mistakes%>');
 	var solved = JSON.parse('<%- solved%>');
-	var rowNum = (mistakes < 5) ? Math.max(1, solved.length + 1): words.length;
+	var rowNum = Math.max(1, solved.length + 1);
 	var givenLetter = Number('<%- givenLetter%>');
 	
 	var columnNum = givenLetter;
@@ -489,18 +489,21 @@ body {
 			word += row.cells[i].innerHTML;
 		} 
 		var lowercase = word.toLowerCase()
+		
 		var url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + lowercase;
 		
 		var ran = false;
-		$.ajax({
+		
+		/*$.ajax({
 			type: "GET",
 			url: url,
 			async: false,
 			success: function(data) {
+				document.getElementById('test').innerHTML = "Fuck You"
 				ran = true
 			}
-		})
-		return ran;
+		})*/
+		return true;
 	}
 	
 	//Checks if word entered is proper
@@ -525,9 +528,12 @@ body {
 		var word = words[rowNum]
 		
 		if (character == "ENTER" || character == "RETURN") {
+			
 			if (columnNum == row.cells.length) {
+				
 				var real = isReal();
 				if (!real) {
+					
 					for (var i = givenLetter; i < word.length; i++) {
 						var cell = row.cells[i]
 						cell.innerHTML = ""
