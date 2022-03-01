@@ -133,7 +133,7 @@ var endGame = function(req, res) {
 	});
 }
 
-var update = function(req, res) {
+var update = function() {
 	db.updateWords();
 	res.send("Done")
 }
