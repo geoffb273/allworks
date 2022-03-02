@@ -27,21 +27,11 @@ var newWords = function(words) {
 	
 }
 
-var updateWords = function() {
-	utils.getItem("pointer", "").then(snap => {
-		if (snap.exists()) {
-			var pointer = snap.val() + 1;
-			utils.putItem("pointer", "", pointer);
-		}
-	});
-}
-
 
 module.exports = {
 	getRecord: getRecord,
 	setRecord: setRecord,
 	getWords: getWords,
-	updateWords: updateWords,
 	getPointer: getPointer,
 	newWords: newWords
 };
