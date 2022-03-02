@@ -40,8 +40,9 @@ var update = function() {
 	var midnightEST = new Date();
 	midnightEST.setUTCHours(28, 59, 59, 1000);
 	routes.update();
-	setTimeout(update, midnightEST.getTime - Date.now());
+	setTimeout(update, midnightEST.getTime() - Date.now());
 }
+update()
 
 
 
