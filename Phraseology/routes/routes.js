@@ -3,7 +3,7 @@ var crypto = require('crypto');
 var {v4: uuidv4} = require('uuid')
 var requestIp = require('request-ip');
 
-var pointer = 7;
+var pointer = 6;
 
 
 var getHome = function(req, res) {
@@ -40,9 +40,6 @@ var getHome = function(req, res) {
 		//res.cookie('givenLetter', 0, {expires: midnightEST})
 		givenLetter = req.cookies['givenLetter']
 	}
-		if (snapshot.exists()) {
-			pointer = snapshot.val();
-		}
 		db.getWords(pointer).then(snapshot => {
 			var words = []
 			if (snapshot.exists()) {
