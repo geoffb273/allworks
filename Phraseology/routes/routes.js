@@ -3,6 +3,9 @@ var crypto = require('crypto');
 var {v4: uuidv4} = require('uuid')
 var requestIp = require('request-ip');
 
+var pointer = 7;
+
+
 var getHome = function(req, res) {
 	var midnightEST = new Date();
 	midnightEST.setUTCHours(28, 59, 59, 1000);
@@ -37,8 +40,6 @@ var getHome = function(req, res) {
 		//res.cookie('givenLetter', 0, {expires: midnightEST})
 		givenLetter = req.cookies['givenLetter']
 	}
-	db.getPointer().then(snapshot => {
-		var pointer = 0
 		if (snapshot.exists()) {
 			pointer = snapshot.val();
 		}
@@ -60,7 +61,6 @@ var getHome = function(req, res) {
 			console.log(err);
 			res.send(err)
 		});
-	})
 	
 	
 	
@@ -133,10 +133,6 @@ var endGame = function(req, res) {
 	});
 }
 
-var update = function() {
-	db.updateWords();
-	res.send("Done")
-}
 
 var add = function(req, res) {
 	res.render('admin.ejs')
@@ -161,6 +157,10 @@ var newWords = function(req, res) {
 		res.redirect("/")
 	}
 	
+}
+
+var update = function() {
+	pointer += 1;
 }
 
 
