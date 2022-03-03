@@ -3,10 +3,9 @@ var crypto = require('crypto');
 var {v4: uuidv4} = require('uuid')
 var requestIp = require('request-ip');
 
-var pointer = 6;
-
 
 var getHome = function(req, res) {
+	var pointer = req.session.pointer
 	var midnightEST = new Date();
 	midnightEST.setUTCHours(28, 59, 59, 1000);
 	var infinite = new Date();
@@ -156,10 +155,6 @@ var newWords = function(req, res) {
 	
 }
 
-var update = function() {
-	pointer += 1;
-}
-
 
 
 var routes = {
@@ -167,7 +162,6 @@ var routes = {
 	mistake: addMistake,
 	correct: addLevel,
 	game_over: endGame,
-	update: update,
 	add: add,
 	send: newWords
 };
