@@ -8,8 +8,9 @@ var setRecord = function(id, record) {
 	return utils.putItem("records", id, record);
 }
 
-var getPointer = function() {
-	return utils.getItem("pointer", "");
+var getPointer = async function() {
+	let pointer = await utils.getItem("pointer", "");
+	return pointer.val();
 }
 
 var getWords = function(pointer) {
@@ -27,11 +28,21 @@ var newWords = function(words) {
 	
 }
 
+var updatePointer = function() {
+	utils.getItem("pointer").then(snap => {
+		if (snap.exists()) {
+			var pointer = snap.val() + 1;
+			utils.putItem("pointer", "", pointer);
+		}
+	});
+}
+
 
 module.exports = {
 	getRecord: getRecord,
 	setRecord: setRecord,
 	getWords: getWords,
 	getPointer: getPointer,
-	newWords: newWords
+	newWords: newWords,
+	updatePointer: updatePointer
 };

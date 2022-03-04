@@ -53,10 +53,9 @@ function update() {
         0, 0, 0 
     );
     var msToMidnight = night.getTime() - now.getTime();
-
     setTimeout(function() {
-        pointer += 1
-        update();
+        routes.update();
+		update();
     }, msToMidnight);
 }
 update()

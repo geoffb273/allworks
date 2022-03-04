@@ -1,11 +1,10 @@
 var db = require('../models/database.js');
-var crypto = require('crypto');
+
 var {v4: uuidv4} = require('uuid')
-var requestIp = require('request-ip');
 
 
-var getHome = function(req, res) {
-	var pointer = req.session.pointer
+var getHome = async function(req, res) {
+	var pointer = await db.getPointer();
 	var midnightEST = new Date();
 	midnightEST.setUTCHours(28, 59, 59, 1000);
 	var infinite = new Date();
@@ -155,7 +154,9 @@ var newWords = function(req, res) {
 	
 }
 
-
+var update = function() {
+	db.updatePointer();
+}
 
 var routes = {
 	home: getHome,
@@ -163,7 +164,8 @@ var routes = {
 	correct: addLevel,
 	game_over: endGame,
 	add: add,
-	send: newWords
+	send: newWords,
+	update: update
 };
 
 module.exports = routes;
