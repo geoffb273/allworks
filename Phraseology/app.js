@@ -46,12 +46,9 @@ app.post("/send", routes.send)
 
 function update() {
     var now = new Date();
-    var night = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate() + 1,
-        0, 0, 0 
-    );
+    var night = new Date();
+	night.setUTCDate(now.getUTCDate() + 1);
+	night.setUTCHours(5, 0, 0, 0);
     var msToMidnight = night.getTime() - now.getTime();
     setTimeout(function() {
         routes.update();
