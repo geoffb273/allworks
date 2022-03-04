@@ -12,10 +12,10 @@ body {
 		color: #ffffff;
 		float: left;
 		margin: 0 5px 5px 0;
-		width: 60px;
-		height: 60px;
-		line-height: 60px;
-		font-size: 60px;
+		width: 8vmin;
+		height: 8vmin;
+		line-height: 8vmin;
+		font-size: 8.5vmin;
 		text-align: center;
 		border: 1px solid #f9f9f9;
 		-moz-border-radius: 5px;
@@ -36,21 +36,21 @@ body {
 		color: #ffffff;
 		float: left;
 		margin: 0 5px 5px 0;
-		width: 50px;
-		height: 40px;
-		line-height: 40px;
+		width: 7.5vmin;
+		height: 6.5vh;
+		line-height: 6.5vh;
 		text-align: center;
 		border: 1px solid #f9f9f9;
 		-moz-border-radius: 5px;
 		-webkit-border-radius: 5px;
-		font-size: 30px
+		font-size: 4vmin;
 	}
 		.firstitem{
 			clear: left;
 		}
 		#keyboard .delete, #keyboard .return {
-			width: 80px;
-			font-size: 20px;
+			width: 11vmin;
+			font-size: 2.5vmin;
 		}
 			
 		.lastitem {
@@ -61,6 +61,7 @@ body {
 		.on {
 			display: none;
 		}
+		
 		#keyboard li:hover {
 			position: relative;
 			top: 1px;
@@ -78,9 +79,8 @@ body {
 		.row2 {position: relative; left: 20px}
 
 #mistakes {
-	position: fixed;
-	left: 90%;
-	top: 5%;
+position: absolute;
+	right: 5%;
 	font-size: 20px;
 	color: #fb898b;
 }
@@ -89,17 +89,20 @@ body {
 	justify-content: center;
 }
 #grid {
-	margin: auto
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 3vh;
+	
 }
 #grid td {
 	background: #000000;
 		color: #ffffff;
 		float: left;
 		margin: 0 5px 0px 0;
-		width: 60px;
-		height: 60px;
-		line-height: 55px;
-		font-size: 40px;
+		width: 8.5vmin;
+		height: 7vh;
+		line-height: 7vh;
+		font-size: 4.25vmin;
 		text-align: center;
 		border: 1px solid #f9f9f9;
 		-moz-border-radius: 5px;
@@ -118,18 +121,17 @@ body {
 }
 .popuptext {
   visibility: hidden;
-  background-color: #555;
+  background-color: black;
   color: #fff;
   font-size: 20px;
   border-radius: 6px;
   position: fixed;
   z-index: 1;
-  left: 20%;
-	right:20%;
-	height: 25%
-  top: 30%;
+  left: 25%;
+  right:20%;
+  top: 10%;
   max-width: 700px;
-  min-height: 100px;
+  height: 55vmin;
   
 }
 
@@ -146,8 +148,7 @@ body {
 
 #rules-button {
 	background: #000000;
-	position: relative;
-	top: 5%;
+	position: absolute;
 	color: #ffffff;
 	font-size: 20px;
 	font-family: serif;
@@ -156,36 +157,43 @@ body {
 #rules-close {
 	background: #000000;
 	color: #ffffff;
-	position: relative;
-	left: 95%;
-	top: 7.5%;
+	font-size: 2vmin;
 }
 #rules-list {
 	list-style: none;
+	font-size: 3vmin;
+	left: 0px;
 }
 
 #mistakesBarChart {
-	width:100%;
+	
 	max-width:700px;
-	background:black;
-	position:relative;
 	border-radius: 6px;
-	bottom: 50px;
+	top: 0px;
 }
 
 #percent {
 	position: absolute;
+	left: 10px;
 	bottom: 0px;
-	left: 20px;
 }
 
-#tweet-container {
+#percent-div {
 	position: absolute;
-	bottom: 25px;
-	right: 10px;
+	bottom: 0px;
+	width: 100%;
 }
 
-@media screen and (max-width: 780px) {
+#share-button {
+	position: absolute;
+	bottom: 20px;
+	right: 10px;
+	background: black;
+	color: white;
+	border-radius: 5px;
+}
+
+/*@media screen and (max-width: 780px) {
 	
 	#tweet-container {
 		bottom: 5px;
@@ -286,7 +294,7 @@ body {
 		line-height: 45px;
 	}
 	
-}
+}*/
 
 
 
@@ -350,6 +358,7 @@ body {
 	</ul>
 </div>
 
+<div>
 <p id="mistakes"></p>
 <div class="popup" onclick="openRules()">
 	<button id="rules-button">Rules</button>
@@ -357,7 +366,7 @@ body {
 		<button id="rules-close"><b>X</b></button>
 		<ul id="rules-list">
 		<li>
-			GOAL: connect the top word to the bottom word using two-word combos/phrases.
+			GOAL: connect the top word to the bottom word using two-word combos/phrases or compound words.
 		</li>
 		<li>
 		RULES:
@@ -376,14 +385,15 @@ body {
 		</ul>
 	</span>
 </div>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+
 <div class="popup" onclick="closeGameOver()">
 	<span class="popuptext" id="gameOverPopup" >
 		<canvas id="mistakesBarChart"></canvas>
-		<p id="percent">
-		</p>
-		
-		<div id="tweet-container"></div>
+		<div id="percent-div">
+			<p id="percent"></p>
+			<button id="share-button">Share</button>
+		</div>
 		
 	</span>
 </div>
@@ -518,7 +528,7 @@ body {
 	//Handles Keyboard Touches character
 	var newCharacter = function(character) {
 		
-		if (popup || rowNum > words.length - 2) {
+		if (popup || rowNum > words.length - 2 || mistakes >= 5) {
 			return
 		}
 		var row = grid.rows[rowNum];
@@ -642,19 +652,36 @@ body {
 			}
 		});
 		
-		twttr.widgets.createShareButton(
-			"https:\/\/www.phrasechain.com",
-			document.getElementById("tweet-container"),
-			{
-				size: "small",
-				text: "I beat today's Phrase Chain with only " + mistakes + " mistakes. Can you do better? Play now at " ,
-				hashtags: "phrasechain,phrasegame,wordgame"
+		var text = "I was able to do today's PhraseChain in only " + mistakes + ". Can you do better? https://www.phrasechain.com"
+		if (mistakes >= 5) {
+			text = "Today's PhraseChain took me at least 5 mistakes.  Can you do better?"
+		}
+		const btn = document.getElementById('share-button');
+		const shareData = {
+			title: 'PhraseChain',
+			text: text,
+			url: 'https://www.phrasechain.com'
+		}
+		btn.addEventListener('click', async () => {
+			var popupEl = document.getElementById("gameOverPopup");
+				popupEl.classList.toggle("show");
+				popup = !popup;
+			try {
+				await navigator.share(shareData)
+				
+			} catch (err) {
+				
 			}
-		);
+			
+		});
+		
+		
+		
 		
 		document.getElementById("percent").innerHTML = "Games Won: " + Math.round(percent * 100) + "%";
 		popup = !popup
 	}
+
 	
 	var closeGameOver = function() {
 		var popupEl = document.getElementById("gameOverPopup");
