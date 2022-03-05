@@ -45,13 +45,29 @@ var getHome = async function(req, res) {
 				for(var i in unclean) {
 					words.push(unclean[i]);
 				}
+				res.render('main.ejs', {
+					words: JSON.stringify(words), 
+					mistakes: mistakes, 
+					solved: JSON.stringify(solved),
+					givenLetter: givenLetter
+				});
+			} else {
+				db.getWords(0).then(snap => {
+					if (snap.exists()) {
+						var unclean = snap.val()
+						for(var i in unclean) {
+							words.push(unclean[i]);
+						}
+						res.render('main.ejs', {
+							words: JSON.stringify(words), 
+							mistakes: mistakes, 
+							solved: JSON.stringify(solved),
+							givenLetter: givenLetter
+						});
+					}
+				});
 			}
-			res.render('main.ejs', {
-				words: JSON.stringify(words), 
-				mistakes: mistakes, 
-				solved: JSON.stringify(solved),
-				givenLetter: givenLetter
-			});
+			
 		}).catch(err => {
 			console.log(err);
 			res.send(err)

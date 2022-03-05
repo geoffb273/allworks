@@ -28,9 +28,11 @@ var newWords = function(words) {
 	
 }
 
-var updatePointer = function() {
+var updatePointer = function(reset = false) {
 	utils.getItem("pointer").then(snap => {
-		if (snap.exists()) {
+		if (reset) {
+			utils.putItem("pointer", "", 0);
+		} else if (snap.exists()) {
 			var pointer = snap.val() + 1;
 			utils.putItem("pointer", "", pointer);
 		}
