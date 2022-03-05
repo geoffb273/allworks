@@ -7,7 +7,7 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var MemoryStore = require('memorystore')(session);
 var PORT = process.env.PORT || 8000
-
+var cron = require('node-cron')
 var cors = require('cors');
 
 var pointer = 8;
@@ -45,19 +45,9 @@ app.get("/add", routes.add);
 app.post("/send", routes.send)
 
 function update() {
-    var now = new Date();
-    var night = new Date();
-	night.setUTCDate(now.getUTCDate() + 1);
-	night.setUTCHours(5, 0, 0, 0);
-    var msToMidnight = night.getTime() - now.getTime();
-    setTimeout(function() {
-        routes.update();
-		update();
-    }, msToMidnight);
+    routes.update()
 }
-update()
-
-
+cron.schedule("0 5 * * *", update);
 
 http.listen(PORT, function(){  
     console.log('listening on :' + PORT);
