@@ -47,7 +47,12 @@ app.post("/send", routes.send)
 function update() {
     routes.update()
 }
-cron.schedule("0 5 * * *", update);
+cron.schedule('0 0 * * *', () => {
+   update();
+ }, {
+   scheduled: true,
+   timezone: "America/New_York"
+ });
 
 http.listen(PORT, function(){  
     console.log('listening on :' + PORT);
