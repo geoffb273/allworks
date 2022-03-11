@@ -1,5 +1,5 @@
 var db = require('../models/database.js');
-
+var crypto = require('crypto'); 
 var {v4: uuidv4} = require('uuid')
 
 
@@ -52,6 +52,7 @@ var getHome = async function(req, res) {
 					givenLetter: givenLetter
 				});
 			} else {
+				db.resetPointer();
 				db.getWords(0).then(snap => {
 					if (snap.exists()) {
 						var unclean = snap.val()
@@ -161,7 +162,9 @@ var newWords = function(req, res) {
 		7: req.body.word7.toUpperCase()
 	}
 	
-	if (username == "geoffb273@190054" || username == "EHSVikings12!") {
+	if (crypto.createHash('sha256').update(username).digest('hex') 
+		== "ba6a3004dcd4db2a4da1e3d7a9810349534de26280df8b635fa2d04c25d0eb01" 
+			|| crypto.createHash('sha256').update(username).digest('hex') == "8343a0e1b8e5bb3d26c91d4af1bad7a92e7b71185ce1a832dcfa3ed7a65b3cde") {
 		db.newWords(words);
 		res.redirect("/add")
 	}	else {

@@ -28,15 +28,17 @@ var newWords = function(words) {
 	
 }
 
-var updatePointer = function(reset = false) {
+var updatePointer = function() {
 	utils.getItem("pointer", "").then(snap => {
-		if (reset) {
-			utils.putItem("pointer", "", 0);
-		} else if (snap.exists()) {
+		if (snap.exists()) {
 			var pointer = snap.val() + 1;
 			utils.putItem("pointer", "", pointer);
 		}
 	});
+}
+
+var resetPointer = function() {
+	return utils.putItem("pointer", "", 0);
 }
 
 
@@ -46,5 +48,6 @@ module.exports = {
 	getWords: getWords,
 	getPointer: getPointer,
 	newWords: newWords,
-	updatePointer: updatePointer
+	updatePointer: updatePointer,
+	resetPointer: resetPointer
 };
