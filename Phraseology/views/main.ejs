@@ -77,12 +77,29 @@ body {
 			cursor: pointer;
 		}
 		.row2 {position: relative; left: 20px}
-
-#mistakes {
-position: absolute;
-	right: 5%;
+#rules-mistakes {
+	position: fixed;
+	width: 100%;
+	
+}
+#rules-button {
+	background: #000000;
+	top: 0px;
+	color: #ffffff;
 	font-size: 20px;
-	color: #fb898b;
+	font-family: serif;
+}
+#mistakes {
+	position: absolute;
+	top: -15px;
+	right: 2vw;
+	font-size: 16px;
+	font-weight: bold;
+	color: white;
+	background: black;
+	border: 1px solid #f9f9f9;
+	padding: 3px;
+	
 }
 #container {
 	display: flex;
@@ -91,7 +108,7 @@ position: absolute;
 #grid {
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 3vh;
+	margin-top: 4vh;
 	
 }
 #grid td {
@@ -146,13 +163,7 @@ position: absolute;
   border-color: #555 transparent transparent transparent;
 }
 
-#rules-button {
-	background: #000000;
-	position: absolute;
-	color: #ffffff;
-	font-size: 20px;
-	font-family: serif;
-}
+
 
 #rules-close {
 	background: #000000;
@@ -193,110 +204,6 @@ position: absolute;
 	border-radius: 5px;
 }
 
-/*@media screen and (max-width: 780px) {
-	
-	#tweet-container {
-		bottom: 5px;
-	}
-	#percent { 
-		left: 5px;
-		bottom: -15px;
-	}
-	
-	#rules-close {
-		left: 90%;
-	}
-	#keyboard li {
-		margin: 0 5px 1px 0;
-		width: 40px;
-		height: 40px;
-		font-size: 35px
-	}
-	
-	#keyboard .delete, #keyboard .return {
-		width: 60px;
-		font-size: 15px;
-	}
-	
-	#title td {
-		font-size: 40px;
-		width: 39px;
-		height: 45px;
-		margin: 0 0px 0px 0;
-		line-height: 45px;
-	}
-	
-	
-	#rule-button {
-		position: relative;
-		top: 1000px;
-		
-	}
-	
-	#mistakes {
-		position: absolute;
-		top: 75px;
-		left: 75%;
-	}
-	
-	#grid td {
-		margin: 0 1px 0px 0;
-		width: 50px;
-		height: 50px;
-		line-height: 45px;
-		font-size: 25px;
-	}
-}
-
-@media screen and (max-height: 710px) {
-	#keyboard li {
-		width: 35px;
-		height: 35px;
-		font-size: 20px;
-		margin: 0 3px 2px 0;
-	}
-	#keyboard .delete, #keyboard .return {
-		width: 60px;
-		font-size: 15px;
-	}
-	#grid td {
-		margin: 0 1px 0px 0;
-		width: 50px;
-		height: 45px;
-		line-height: 45px;
-	}
-	
-	#title td {
-		font-size: 45px;
-		width: 50px;
-		height: 50px;
-		line-height: 50px;
-	}
-}
-
-@media screen and (max-height: 710px) and (max-width: 780px) {
-	#keyboard li {
-		width: 35px;
-		height: 35px;
-		font-size: 25px;
-		margin: 0 2px 0px 0;
-	}
-	#keyboard .delete, #keyboard .return {
-		width: 60px;
-		font-size: 15px;
-	}
-	
-	#title td {
-		font-size: 40px;
-		width: 39px;
-		height: 45px;
-		margin: 0 0px 0px 0;
-		line-height: 45px;
-	}
-	
-}*/
-
-
 
 </style>
 <header>
@@ -316,6 +223,35 @@ position: absolute;
 	</tr>
 </table>
 </header>
+<div id="rules-mistakes">
+<p id="mistakes"></p>
+<button id="rules-button" onclick="openRules()">Rules</button>
+</div>
+<div class="popup" onclick="openRules()">
+	
+	<span class="popuptext" id="rulesPopup">
+		<button id="rules-close"><b>X</b></button>
+		<ul id="rules-list">
+		<li>
+			GOAL: connect the top word to the bottom word using two-word combos/phrases or compound words.
+		</li>
+		<li>
+		RULES:
+			<ul>
+				<li>
+					 Start your guess below the top word.
+				</li>
+				<li>
+					Each wrong guess generates a hint.
+				</li>
+				<li>
+					5 wrong guesses and it’s GAME OVER
+				</li>
+			</ul>
+		</li>
+		</ul>
+	</span>
+</div>
 <meta name="viewport" content="width=device-width, initial-scale=0.75" /> 
 <div id="fb-root"></div>
 <div id="container">
@@ -356,35 +292,6 @@ position: absolute;
 		<li class="return lastitem">ENTER</li>
 		
 	</ul>
-</div>
-
-<div>
-<p id="mistakes"></p>
-<div class="popup" onclick="openRules()">
-	<button id="rules-button">Rules</button>
-	<span class="popuptext" id="rulesPopup">
-		<button id="rules-close"><b>X</b></button>
-		<ul id="rules-list">
-		<li>
-			GOAL: connect the top word to the bottom word using two-word combos/phrases or compound words.
-		</li>
-		<li>
-		RULES:
-			<ul>
-				<li>
-					 Start your guess below the top word.
-				</li>
-				<li>
-					Each wrong guess generates a hint.
-				</li>
-				<li>
-					5 wrong guesses and it’s GAME OVER
-				</li>
-			</ul>
-		</li>
-		</ul>
-	</span>
-</div>
 </div>
 
 <div class="popup" onclick="closeGameOver()">
@@ -440,7 +347,7 @@ position: absolute;
 	
 	var columnNum = givenLetter;
 	var grid = document.getElementById('grid');
-	document.getElementById('mistakes').innerHTML = "<b>Mistakes: " + mistakes + "</b>";
+	document.getElementById('mistakes').innerHTML = "MISTAKES: " + mistakes;
 	
 	//Makes the table for the Game
 	var makeTable = function() {
@@ -573,7 +480,7 @@ position: absolute;
 					givenLetter += 1;
 					columnNum = givenLetter;
 					mistakes += 1;
-					document.getElementById('mistakes').innerHTML = "<b>Mistakes: " + mistakes + "</b>";
+					document.getElementById('mistakes').innerHTML = "MISTAKES: " + mistakes;
 					$.post('/mistake', {givenLetter: givenLetter}, function(res) {
 						if (mistakes >= 5) {
 							for (var i = rowNum; i < words.length; i++) {
