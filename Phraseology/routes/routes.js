@@ -21,9 +21,15 @@ var getHome = async function(req, res) {
 	var infinite = new Date();
 	infinite.setFullYear(3000)
 	
+	var id;
 	if (req.cookies['user'] == undefined) {
-		res.cookie('user', uuidv4(), {expires: infinite});
+		id = uuidv4()
+		res.cookie('user', id, {expires: infinite});
+	} else {
+		id = req.cookies['user']
 	}
+	
+	db.played(id);
 	
 	var mistakes = 0;
 	if (req.cookies['mistakes'] == undefined) {
@@ -185,7 +191,8 @@ var newWords = function(req, res) {
 var update = function() {
 	var prevMidnight = new Date();
 	prevMidnight.setUTCHours(4, 0, 0, 0);
-	db.setLastUpdate(prevMidnight)
+	db.sumPlayed();
+	db.setLastUpdate(prevMidnight);
 	db.updatePointer();
 }
 

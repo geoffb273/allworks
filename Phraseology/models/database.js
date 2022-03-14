@@ -54,6 +54,29 @@ var setLastUpdate = function(date) {
 	return utils.putItem("lastUpdate", "", date.toISOString())
 }
 
+var played = function(id) {
+	var prevMidnight = new Date();
+	prevMidnight.setUTCHours(4, 0, 0, 0);
+	
+	return utils.putItem("played", prevMidnight.toDateString() + "/" + id, true)
+}
+
+var sumPlayed = function() {
+	var prevMidnight = new Date();
+	prevMidnight.setUTCHours(4, 0, 0, 0);
+	var num = prevMidnight.getUTCDate();
+	prevMidnight.setUTCDate(num - 1);
+	utils.getItem("played", prevMidnight.toDateString()).then(snap => {
+		if (snap.exists()) {
+			var players = snap.val();
+			if (players.num == undefined) {
+				utils.putItem("played", prevMidnight.toDateString() + "/num", players.length)
+			}
+			
+		}
+	});
+}
+
 
 module.exports = {
 	getRecord: getRecord,
@@ -64,5 +87,7 @@ module.exports = {
 	updatePointer: updatePointer,
 	resetPointer: resetPointer,
 	getLastUpdate: getLastUpdate,
-	setLastUpdate: setLastUpdate
+	setLastUpdate: setLastUpdate,
+	played: played,
+	sumPlayed: sumPlayed
 };
