@@ -9,7 +9,7 @@ var getHome = async function(req, res) {
 	var lastUpdate = last.getTime();
 	var now = Date.now();
 	
-	if (now - lastUpdate >= 86400000) {
+	if (now - lastUpdate >= 86460000) {
 		update()
 		pointer += 1;
 	}
