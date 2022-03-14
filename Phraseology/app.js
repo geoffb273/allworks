@@ -37,7 +37,7 @@ app.get("/add", routes.add);
 app.post("/send", routes.send);
 
 app.get("/google58adfd6211de0909.html", function(req, res) {
-	res.render("google-site-verification: google58adfd6211de0909.html");
+	res.render("google58adfd6211de0909.html");
 });
 
 function update() {
