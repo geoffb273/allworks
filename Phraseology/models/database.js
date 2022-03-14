@@ -57,7 +57,7 @@ var setLastUpdate = function(date) {
 var played = function(id) {
 	var prevMidnight = new Date();
 	prevMidnight.setUTCHours(4, 0, 0, 0);
-	var string = prevMidnight.toUTCString().split("T")[0];
+	var string = prevMidnight.toISOString().split("T")[0];
 	return utils.putItem("played", string + "/" + id, true)
 }
 
@@ -66,7 +66,7 @@ var sumPlayed = function() {
 	prevMidnight.setUTCHours(4, 0, 0, 0);
 	var num = prevMidnight.getUTCDate();
 	prevMidnight.setUTCDate(num - 1);
-	var string = prevMidnight.toUTCString().split("T")[0];
+	var string = prevMidnight.toISOString().split("T")[0];
 	utils.getItem("played", string).then(snap => {
 		if (snap.exists()) {
 			var players = snap.val();
