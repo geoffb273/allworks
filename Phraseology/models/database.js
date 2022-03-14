@@ -56,9 +56,14 @@ var setLastUpdate = function(date) {
 
 var played = function(id) {
 	var prevMidnight = new Date();
-	prevMidnight.setUTCHours(4, 0, 0, 0);
+	if (prevMidnight.getUTCHours() < 4) {
+		prevMidnight.setUTCHours(-1, 0, 0, 0);
+	} else {
+		prevMidnight.setUTCHours(4, 0, 0, 0);
+	}
 	var string = prevMidnight.toISOString().split("T")[0];
-	return utils.putItem("played", string + "/" + id, true)
+	
+	return utils.putItem("played", string + "/" + id, new Date().toISOString())
 }
 
 var sumPlayed = function() {
