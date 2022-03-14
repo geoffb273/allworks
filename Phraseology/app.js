@@ -27,14 +27,7 @@ app.use(session({
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next()
   });
-app.all('*', function(req, res, next) {
-  if (req.path == '/' && req.session.pointer != pointer) {
-    req.session.pointer = pointer
-	res.redirect('/');
-  } else {
-    next();
-  }
-});
+
 app.get("/", routes.home);
 app.post("/mistake", routes.mistake);
 app.post("/correct", routes.correct);
