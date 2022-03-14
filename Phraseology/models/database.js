@@ -41,6 +41,19 @@ var resetPointer = function() {
 	return utils.putItem("pointer", "", 0);
 }
 
+var getLastUpdate = async function() {
+	var snap = await utils.getItem("lastUpdate", "");
+	if (snap.exists()) {
+		return new Date(snap.val());
+	} else {
+		return new Date(0);
+	}
+}
+
+var setLastUpdate = function(date) {
+	return utils.putItem("lastUpdate", "", date.toISOString())
+}
+
 
 module.exports = {
 	getRecord: getRecord,
@@ -49,5 +62,7 @@ module.exports = {
 	getPointer: getPointer,
 	newWords: newWords,
 	updatePointer: updatePointer,
-	resetPointer: resetPointer
+	resetPointer: resetPointer,
+	getLastUpdate: getLastUpdate,
+	setLastUpdate: setLastUpdate
 };

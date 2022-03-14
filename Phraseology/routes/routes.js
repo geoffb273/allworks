@@ -4,9 +4,20 @@ var {v4: uuidv4} = require('uuid')
 
 
 var getHome = async function(req, res) {
+	var last = await db.getLastUpdate();
 	var pointer = await db.getPointer();
+	var lastUpdate = last.getTime();
+	var now = Date.now();
+	
+	if (now - lastUpdate >= 86400000) {
+		update()
+		pointer += 1;
+	}
+	
+	
+	
 	var midnightEST = new Date();
-	midnightEST.setUTCHours(28, 59, 59, 1000);
+	midnightEST.setUTCHours(27, 59, 59, 1000);
 	var infinite = new Date();
 	infinite.setFullYear(3000)
 	
@@ -79,9 +90,8 @@ var getHome = async function(req, res) {
 }
 
 var addMistake = function(req, res) {
-	console.log(req.cookies['user'])
 	var midnightEST = new Date();
-	midnightEST.setUTCHours(28, 59, 59, 1000);
+	midnightEST.setUTCHours(27, 59, 59, 1000);
 	if (req.cookies['mistakes'] != undefined) {
 		res.cookie('mistakes', Number(req.cookies['mistakes']) + 1, {expires: midnightEST});
 	} else {
@@ -98,7 +108,7 @@ var addMistake = function(req, res) {
 var addLevel = function(req, res) {
 	var word = req.body.word;
 	var midnightEST = new Date();
-	midnightEST.setUTCHours(28, 59, 59, 1000);
+	midnightEST.setUTCHours(27, 59, 59, 1000);
 	if (req.cookies['solved'] != undefined) {
 		var solved = JSON.parse(req.cookies['solved']);
 		solved.push(word)
@@ -114,7 +124,6 @@ var endGame = function(req, res) {
 	var mistakes = (req.cookies['mistakes'] != undefined) ? req.cookies['mistakes'] : 0;
 	var upload = (req.body.upload != undefined) ? req.body.upload : false;
 	var id = req.cookies['user'];
-	console.log(id)
 	db.getRecord(id).then(snapshot => {
 		var mistakesMap = { 
 			0: 0,
@@ -174,6 +183,9 @@ var newWords = function(req, res) {
 }
 
 var update = function() {
+	var prevMidnight = new Date();
+	prevMidnight.setUTCHours(4, 0, 0, 0);
+	db.setLastUpdate(prevMidnight)
 	db.updatePointer();
 }
 

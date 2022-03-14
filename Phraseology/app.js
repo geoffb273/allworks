@@ -19,7 +19,6 @@ app.use(session({
 	cookie: {
 		
 	},
-	
     secret: 'GRBRANDT'
 }))
 
