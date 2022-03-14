@@ -27,7 +27,14 @@ app.use(session({
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next()
   });
-
+app.all('*', function(req, res, next) {
+  if (req.path == '/' && req.session.pointer != pointer) {
+    req.session.pointer = pointer
+	res.redirect('/');
+  } else {
+    next();
+  }
+});
 app.get("/", routes.home);
 app.post("/mistake", routes.mistake);
 app.post("/correct", routes.correct);
@@ -35,6 +42,10 @@ app.put("/game-over", routes.game_over);
 
 app.get("/add", routes.add);
 app.post("/send", routes.send);
+
+app.get("/google58adfd6211de0909.html", function(req, res) {
+	res.render("google-site-verification: google58adfd6211de0909.html");
+});
 
 function update() {
     routes.update()
