@@ -69,8 +69,8 @@ var sumPlayed = function() {
 	utils.getItem("played", prevMidnight.toDateString()).then(snap => {
 		if (snap.exists()) {
 			var players = snap.val();
-			if (players.num == undefined) {
-				utils.putItem("played", prevMidnight.toDateString() + "/num", players.length)
+			if (players["00num"] == undefined) {
+				utils.putItem("played", prevMidnight.toDateString() + "/00num", players.length)
 			}
 			
 		}
