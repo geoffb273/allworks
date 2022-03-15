@@ -8,7 +8,6 @@ var getHome = async function(req, res) {
 	var pointer = await db.getPointer();
 	var lastUpdate = last.getTime();
 	var now = Date.now();
-	
 	if (now - lastUpdate >= 86460000) {
 		update()
 		pointer += 1;

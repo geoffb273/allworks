@@ -75,12 +75,12 @@ var sumPlayed = function() {
 	utils.getItem("played", string).then(snap => {
 		if (snap.exists()) {
 			var players = snap.val();
-			if (players.num == undefined) {
+			if (!players.hasOwnProperty('num')) {
 				var cleaned = []
 				for (var key in players) {
 					cleaned.push(players[key]);
 				}
-				utils.putItem("played", string, {num: players.length, times: JSON.stringify(cleaned)})
+				utils.putItem("played", string, {num: cleaned.length, times: JSON.stringify(cleaned)})
 			}
 			
 		}
