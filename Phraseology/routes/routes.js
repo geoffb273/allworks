@@ -13,8 +13,6 @@ var getHome = async function(req, res) {
 		pointer += 1;
 	}
 	
-	
-	
 	var midnightEST = new Date();
 	midnightEST.setUTCHours(27, 59, 59, 1000);
 	var infinite = new Date();

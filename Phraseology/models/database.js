@@ -76,15 +76,50 @@ var sumPlayed = function() {
 		if (snap.exists()) {
 			var players = snap.val();
 			if (!players.hasOwnProperty('num')) {
-				var cleaned = []
-				for (var key in players) {
-					cleaned.push(players[key]);
+				var cleaned = {
+					1: 0,
+					2: 0,
+					3: 0,
+					4: 0,
+					5: 0,
+					6: 0,
+					7: 0,
+					8: 0,
+					9: 0,
+					10: 0,
+					11: 0,
+					12: 0,
+					13: 0,
+					14: 0,
+					15: 0,
+					16: 0,
+					17: 0,
+					18: 0,
+					19: 0,
+					20: 0,
+					21: 0,
+					22: 0,
+					23: 0,
+					0: 0
 				}
-				utils.putItem("played", string, {num: cleaned.length, times: JSON.stringify(cleaned)})
+				var count = 0;
+				for (var key in players) {
+					var hour = findPlace(players[key])
+					cleaned[hour] += 1;
+					count += 1
+				}
+				
+				utils.putItem("played", string, {num: count, times: cleaned})
 			}
-			
 		}
 	});
+}
+
+var findPlace = function(timeString) {
+	var time = new Date(timeString)
+	var hour = time.getUTCHours();
+	time.setUTCHours(hour - 4);
+	return time.getUTCHours();
 }
 
 
