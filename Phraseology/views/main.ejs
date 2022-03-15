@@ -89,6 +89,13 @@ body {
 	font-size: 20px;
 	font-family: serif;
 }
+#rules-header {
+	font-weight: bold;
+	font-size: 3.5vmin;
+	position: absolute;
+	top: -3%;
+	left: 35%;
+}
 #mistakes {
 	position: absolute;
 	top: -15px;
@@ -239,7 +246,11 @@ PhraseChain
 	
 	<span class="popuptext" id="rulesPopup">
 		<button id="rules-close"><b>X</b></button>
+		<p id="rules-header">
+			PhraseChain
+		</p>
 		<ul id="rules-list">
+		
 		<li>
 			GOAL: connect the top word to the bottom word using two-word combos/phrases or compound words.
 		</li>
