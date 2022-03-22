@@ -238,6 +238,7 @@ PhraseChain
 	</tr>
 </table>
 </header>
+
 <div id="rules-mistakes">
 <p id="mistakes"></p>
 <button id="rules-button" onclick="openRules()">Rules</button>
@@ -578,7 +579,7 @@ PhraseChain
 			}
 		});
 		
-		var text = "I was able to do today's PhraseChain in only " + mistakes + ". Can you do better? https://www.phrasechain.com"
+		var text = "I was able to do today's PhraseChain in only " + mistakes + ". Can you do better?"
 		if (mistakes >= 5) {
 			text = "Today's PhraseChain took me at least 5 mistakes.  Can you do better?"
 		}
@@ -586,7 +587,7 @@ PhraseChain
 		const shareData = {
 			title: 'PhraseChain',
 			text: text,
-			url: 'https://www.phrasechain.com'
+			url: 'phrasechain.com'
 		}
 		btn.addEventListener('click', async () => {
 			var popupEl = document.getElementById("gameOverPopup");
