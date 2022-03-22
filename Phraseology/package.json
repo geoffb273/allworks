@@ -5,6 +5,9 @@
    "scripts": {
       "start": "node app.js"
    },
+  "engines": {
+    "node": "16.x"
+   },
    "dependencies": {
       "async": "^3.2.2",
       "cookie-parser": "^1.4.5",
