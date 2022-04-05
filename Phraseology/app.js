@@ -29,7 +29,9 @@ app.use(session({
   });
 
 app.all('*', function(req, res, next) {
-  if (req.path !== '/' && req.path !== '/add') {
+  if (req.path !== '/' && req.path !== '/add' 
+	&& req.path !== '/mistake' && req.path !== '/correct' && req.path !== '/game-over' && req.path !== '/send'
+	&& req.path !== "/google58adfd6211de0909.html") {
     res.redirect('/');
   } else {
     next();
