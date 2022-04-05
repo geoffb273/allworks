@@ -28,6 +28,14 @@ app.use(session({
     next()
   });
 
+app.all('*', function(req, res, next) {
+  if (req.path !== '/' && req.path !== '/add') {
+    res.redirect('/');
+  } else {
+    next();
+  }
+});
+
 app.get("/", routes.home);
 app.post("/mistake", routes.mistake);
 app.post("/correct", routes.correct);
